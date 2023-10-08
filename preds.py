@@ -10,36 +10,61 @@ def get_api_key():
 
 api_key = get_api_key()
 
+def read_file(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
 def generate_response(
-        prompt, 
-        model, 
-        project_type,
-        max_batch_size=4, 
-        max_tokens=2000, # max tokens for gpt-4 = 8192, for palm-2 supported range = [1, 1025)
-        temperature=0.5, # 0 implies models will always pick most likely next word. Set zero but use high top_p and top_k values
-        top_p=0.95, # top-P determines how selects tokens for output, where lower value = less random responses 
+        model="gpt-4-0613",
+        max_tokens=4000,
+        temperature=0.5,
+        top_p=0.95,
     ):
-    try:        
+    try:
+        # Read the file's content and set it as the prompt
+        prompt = read_file("500_lines_AAPL.txt")
+        
+        # Print the provided prompt
+        print("Provided Prompt:", prompt)
+        
         # Construct the specific prompt for this task
         rr_sequence = prompt.split("AAPL_rr:")[-1].split("AAPL_lr:")[0].strip()
         lr_sequence = prompt.split("AAPL_lr:")[-1].strip()
         
+        # Print the extracted sequences for AAPL_rr and AAPL_lr
+        print("\nExtracted Sequence for AAPL_rr:", rr_sequence)
+        print("Extracted Sequence for AAPL_lr:", lr_sequence)
+        
         user_prompt_rr = f"The sequence for AAPL_rr is: {rr_sequence} What are the next 50 values in this sequence?"
         user_prompt_lr = f"The sequence for AAPL_lr is: {lr_sequence} What are the next 50 values in this sequence?"
         
+        # Print the constructed prompts for AAPL_rr and AAPL_lr
+        print("\nConstructed Prompt for AAPL_rr:", user_prompt_rr)
+        print("Constructed Prompt for AAPL_lr:", user_prompt_lr)
+        
+        # Print the chosen model
+        print("\nUsing Model:", model)
+        
         # Use OpenAI API for prediction
-        response_rr = openai.Completion.create(
-            model="gpt-4-0613",
-            prompt=user_prompt_rr,
+        print("\nSending prompt to OpenAI for AAPL_rr...")
+        response_rr = openai.ChatCompletion.create(
+            model=model,        
+            messages=[
+                {"role": "system", "content": "You are a financial forecasting model."},
+                {"role": "user", "content": user_prompt_rr}
+            ],
             max_tokens=max_tokens,
             stop=None,
             temperature=temperature,
             top_p=top_p,
         )
-        
-        response_lr = openai.Completion.create(
-            model="gpt-4-0613",
-            prompt=user_prompt_lr,
+
+        response_rr = openai.ChatCompletion.create(
+            model=model,        
+            messages=[
+                {"role": "system", "content": "You are a financial forecasting model."},
+                {"role": "user", "content": user_prompt_lr}
+            ],
             max_tokens=max_tokens,
             stop=None,
             temperature=temperature,
@@ -49,10 +74,18 @@ def generate_response(
         final_response_rr = response_rr['choices'][0]['text'].strip()
         final_response_lr = response_lr['choices'][0]['text'].strip()
         
+        # Print the obtained predictions
+        print("\nPredicted Values for AAPL_rr:", final_response_rr)
+        print("Predicted Values for AAPL_lr:", final_response_lr)
+        
         return f"AAPL_rr predictions: {final_response_rr}\n\nAAPL_lr predictions: {final_response_lr}"
         
-    # except block to catche any other errors and print to terminal
+    # except block to catch any other errors and print to terminal
     except Exception as e:
-        print(f"An error of type {type(e).__name__} occurred during the generation: {str(e)}")
+        print(f"\nAn error of type {type(e).__name__} occurred during the generation: {str(e)}")
         traceback.print_exc()
         return str(e)
+
+if __name__ == "__main__":
+    response = generate_response()
+    print(response)
