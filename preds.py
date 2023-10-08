@@ -16,13 +16,13 @@ def read_file(file_path):
 
 def generate_response(
         model="gpt-4-0613",
-        max_tokens=4000,
+        max_tokens=8000,
         temperature=0.5,
         top_p=0.95,
     ):
     try:
         # Read the file's content and set it as the prompt
-        prompt = read_file("500_lines_AAPL.txt")
+        prompt = read_file("100_lines_AAPL.txt")
         
         # Print the provided prompt
         print("Provided Prompt:", prompt)
