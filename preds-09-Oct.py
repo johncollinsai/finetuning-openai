@@ -2,11 +2,9 @@ import traceback
 import os
 import openai
 import json
-import pandas as pd
-from io import StringIO
 
 def get_api_key():
-    api_key = os.environ.get("OPENAI_API_KEY", "YOUR_API_KEY")
+    api_key = os.environ["OPENAI_API_KEY"]
     openai.api_key = api_key    
     return api_key
 
@@ -16,12 +14,6 @@ def read_file(file_path):
     with open(file_path, 'r') as file:
         return file.read()
 
-def extract_sequences_from_csv(content):
-    df = pd.read_csv(StringIO(content))
-    rr_sequence = df['AAPL_rr'].dropna().tolist()
-    lr_sequence = df['AAPL_lr'].dropna().tolist()
-    return rr_sequence, lr_sequence
-
 def generate_response(
         model="gpt-4-0613",
         max_tokens=2000,
@@ -30,18 +22,28 @@ def generate_response(
     ):
     try:
         # Read the file's content and set it as the prompt
-        content = read_file("100_lines_AAPL.txt")
+        prompt = read_file("100_lines_AAPL.txt")
         
-        # Extract sequences for AAPL_rr and AAPL_lr
-        rr_sequence, lr_sequence = extract_sequences_from_csv(content)
+        # Print the provided prompt
+        print("Provided Prompt:", prompt)
         
         # Construct the specific prompt for this task
+        rr_sequence = prompt.split("AAPL_rr:")[-1].split("AAPL_lr:")[0].strip()
+        lr_sequence = prompt.split("AAPL_lr:")[-1].strip()
+        
+        # Print the extracted sequences for AAPL_rr and AAPL_lr
+        print("\nExtracted Sequence for AAPL_rr:", rr_sequence)
+        print("Extracted Sequence for AAPL_lr:", lr_sequence)
+
         user_prompt_rr = f"For a hypothetical scenario, based on the sequence for AAPL_rr: {rr_sequence}, what might be the next 10 values?"
         user_prompt_lr = f"For a hypothetical scenario, based on the sequence for AAPL_lr: {lr_sequence}, what might be the next 10 values?"
 
         # Print the constructed prompts for AAPL_rr and AAPL_lr
         print("\nConstructed Prompt for AAPL_rr:", user_prompt_rr)
         print("Constructed Prompt for AAPL_lr:", user_prompt_lr)
+        
+        # Print the chosen model
+        print("\nUsing Model:", model)
         
         # Use OpenAI API for prediction
         print("\nSending prompt to OpenAI for AAPL_rr...")
@@ -63,7 +65,7 @@ def generate_response(
             model=model,        
             messages=[
                 {"role": "system", "content": "You are a mathematician. Analyze the sequence and provide a hypothetical continuation based on mathematical patterns."},
-                {"role": "user", "content": user_prompt_lr}
+                {"role": "user", "content": user_prompt_rr}
             ],
             max_tokens=max_tokens,
             stop=None,
@@ -91,6 +93,3 @@ def generate_response(
 if __name__ == "__main__":
     response = generate_response()
     print(response)
-
-
-
