@@ -1,5 +1,43 @@
 import os
 import openai
+import csv
+
+raw_data_path = "100_lines_AAPL.txt"
+
+def format_dataset_for_finetuning(raw_data_path):
+    formatted_data = []
+
+    with open(raw_data_path, 'r') as f:
+        reader = csv.reader(f)
+        headers = next(reader)  # skip headers
+
+        # Store previous row's data for use in the next iteration
+        prev_row = next(reader)
+        
+        for row in reader:
+            user_content = ', '.join(prev_row)
+            assistant_content = row[6]  # WeightedMidPrice column
+            formatted_data.append(
+                {
+                    "messages": [
+                        {"role": "system", "content": "Predict the WeightedMidPrice of AAPL for the next 50 steps based on historical data."},
+                        {"role": "user", "content": user_content},
+                        {"role": "assistant", "content": assistant_content}
+                    ]
+                }
+            )
+            prev_row = row
+
+    return formatted_data
+
+formatted_dataset_path = "formatted_dataset.jsonl"
+formatted_data = format_dataset_for_finetuning(raw_data_path)
+
+# Write formatted_data to a new JSONL file
+with open(formatted_dataset_path, 'w') as f:
+    for entry in formatted_data:
+        f.write(str(entry) + '\n')
+
 
 def get_api_key():
     try:
@@ -14,7 +52,7 @@ def get_api_key():
 # Ensure API key is obtained
 api_key = get_api_key()
 
-# Function to upload the dataset file
+# Upload the dataset file
 def upload_dataset(api_key, file_path):
     try:
         print(f"Uploading dataset from: {file_path}")
@@ -29,7 +67,7 @@ def upload_dataset(api_key, file_path):
         print("An error occurred during file upload:", e)
         exit()
 
-# Function to create a fine-tuning job
+# Create a fine-tuning job
 def create_fine_tuning_job(api_key, file_id, model="gpt-3.5-turbo"):
     try:
         print(f"Creating fine-tuning job for file id: {file_id}")
@@ -44,11 +82,8 @@ def create_fine_tuning_job(api_key, file_id, model="gpt-3.5-turbo"):
         print("An error occurred during fine-tuning job creation:", e)
         exit()
 
-# Path to your dataset file
-dataset_file_path = "path/to/your/dataset.jsonl"
-
 # Upload the dataset file and get the file ID
-file_id = upload_dataset(api_key, dataset_file_path)
+file_id = upload_dataset(api_key, formatted_dataset_path)
 
 # Create a fine-tuning job with the uploaded file ID
 job_id = create_fine_tuning_job(api_key, file_id)
