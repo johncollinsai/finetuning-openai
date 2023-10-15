@@ -1,6 +1,7 @@
 import os
 import openai
 import csv
+import json
 
 raw_data_path = "100_lines_AAPL.txt"
 
@@ -27,7 +28,8 @@ def format_dataset_for_finetuning(raw_data_path):
                 }
             )
             prev_row = row
-
+    
+    print(f"Total formatted data points: {len(formatted_data)}")
     return formatted_data
 
 formatted_dataset_path = "formatted_dataset.jsonl"
@@ -36,7 +38,7 @@ formatted_data = format_dataset_for_finetuning(raw_data_path)
 # Write formatted_data to a new JSONL file
 with open(formatted_dataset_path, 'w') as f:
     for entry in formatted_data:
-        f.write(str(entry) + '\n')
+        f.write(json.dumps(entry) + '\n')  #use json module's dumps method to convert dictionaries into valid JSON strings
 
 
 def get_api_key():
@@ -83,6 +85,9 @@ def create_fine_tuning_job(api_key, file_id, model="gpt-3.5-turbo"):
         exit()
 
 # Upload the dataset file and get the file ID
+file_size = os.path.getsize(formatted_dataset_path)
+print(f"Size of the formatted dataset file: {file_size} bytes")
+
 file_id = upload_dataset(api_key, formatted_dataset_path)
 
 # Create a fine-tuning job with the uploaded file ID
@@ -90,5 +95,3 @@ job_id = create_fine_tuning_job(api_key, file_id)
 
 # Output the job ID
 print("Fine-Tuning Job ID:", job_id)
-
-

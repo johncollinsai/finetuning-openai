@@ -5,6 +5,7 @@
 data/
 allfiles/
 *.txt
+*.jsonl
 
 # jupyter checkpoints
 .ipynb_checkpoints/
