@@ -3,7 +3,7 @@ import openai
 import csv
 import json
 
-raw_data_path = "100_lines_AAPL.txt"
+raw_data_path = "100000_lines_AAPL.txt"
 
 def format_dataset_for_finetuning(raw_data_path):
     formatted_data = []

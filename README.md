@@ -1,53 +1,31 @@
 # finetuning-openai
 
-## Conclusion
+## Prompt Engineering vs Fine-Tuning for Stock Price Predictions
+This repo contains code and examples from my blog post on using prompt engineering and fine-tuning with GPT models for stock price predictions.
 
-This post is dedicated to exploring the nuances of fine-tuning and prompt engineering with models like GPT.
+## Overview
+In this post, I dive deep into the fine-tuning of language models and prompt engineering, using the problem setting of stock price prediction based on high-frequency OHLC stock price data for AAPL.
 
-### Key Insights:
+I demonstrate that fine-tuning, especially with models like GPT-3.5 Turbo, is the stronger approach. The ability to train a model on specific data, such as price sequences, enhances its understanding and predictive power for those unique use cases.
 
-#### **Advantages of Fine-Tuning**:
+**Key topics covered:**
 
-- **Tailored Performance**: Fine-tuning can produce superior results specific to the task compared to prompting.
-- **Greater Training Capacity**: Fine-tuning permits training on a larger dataset compared to prompt-based techniques which have a limited example input capacity.
-- **Efficiency**: Shorter prompts lead to token savings, resulting in cost reductions and quicker responses.
-- **Reliability and Specificity**: Fine-tuning excels in tasks that demand a distinct style, format, or tone. It assures a consistent output, addresses intricate prompts, manages specific edge cases, and tackles challenges hard to define in a prompt.
+▪ Formatting stock price data for fine-tuning
+▪ Training loops and hyperparameters
+▪ Monitoring training progress
+▪ Generating predictions from a fine-tuned model
+▪ Engineering effective prompts with context
+▪ Token limits and other challenges of prompting
+▪ Using ChatGPT's advanced data analysis plugin
 
-#### **Challenges of Fine-Tuning**:
+**Code**
 
-- **Time and Resource Intensive**: The entire fine-tuning process, including data preparation, requires significant resources and time.
-- **Overfitting**: There's a potential risk of the model becoming overly specialized with a non-diverse or small dataset.
-- **Loss of Generality**: Specialization may compromise the model's general-purpose capabilities.
-- **Maintenance**: Continuous updates or changing requirements might call for regular re-fine-tuning.
+Various Python scripts support the work reported in the post:
 
-#### **Prompt Engineering Insights**:
+▪ createfile.py - Reads the first 100,000 lines from an input file df_data_AAPL.txt and writes them to a new output file 100000_lines_AAPL.txt.
+▪ finetuning.py - Formats a raw CSV stock price dataset into JSONL, uploads it to OpenAI, and creates a fine-tuning job to train a GPT-3.5 model on predicting stock prices.
+▪ preds.py - This code extracts stock price sequences from a CSV, constructs prompts to get hypothetical continuations from GPT-4, and prints the predicted next values.
 
-- Prompt Engineering involves the iterative refinement of prompts to guide the model towards desired results. Techniques make use of the "few-shot learning" capabilities of models like GPT, utilizing a few examples to dictate the task at hand.
-- For an in-depth dive into prompt engineering methods, refer to the earlier post titled [Prompt Engineering](#).
+**References**
 
-#### **Advantages of Prompt Engineering**:
-
-- **Quick Feedback Loop**: Without the need for retraining, prompting provides rapid feedback, facilitating model optimization.
-- **Flexibility**: Adjusting prompts based on requirements is simpler than model re-fine-tuning.
-- **Lower Investment**: Prompt engineering requires fewer resources and time compared to fine-tuning.
-- **Generalizability**: The model's extensive knowledge and adaptability remain untouched without specific training.
-
-#### **Challenges of Prompt Engineering**:
-
-- **Limitations in Performance**: There exists a performance cap achievable through prompting alone, especially for highly specialized tasks.
-- **Complexity**: Crafting prompts for complex tasks can become intricate.
-- **Token Limit**: GPT-4 has a token limit of 8192 tokens per request. For instance, sending 150 lines of data surpasses this boundary.
-- **Context Length**: The model's context length confines the extent of the prompt it can consider. For example, including 125 lines can breach token limits when adding completion tokens.
-- **Data Reduction**: Condensing data may result in less precise predictions. There's a concern that shortening or summarizing data could impair prediction accuracy.
-- **Real-world Predictions**: The model isn't specialized for real-world financial predictions. For instance, it cannot predict stock market data based on certain prompts.
-- **Role and Content Limitation**: Model outputs can be swayed by the role and content of the system message. For example, defining a context like "You are a mathematician" shapes the model's reply.
-- **Repetitive Disclaimers**: The model might emphasize its limitations repeatedly.
-- **Model Misunderstanding**: The model might misconstrue the context. For example, it might offer generic sequence continuations devoid of financial insight.
-
-The above challenges stem from real-world examples encountered throughout this post.
-
-Fine-tuning a GPT model involves adapting its pre-trained parameters for a specific task using a smaller data subset. This method seeks to improve the model's performance for specialized applications. But, fine-tuning isn't devoid of challenges.
-
-Choosing between fine-tuning and prompt engineering is influenced by factors like the task's nature, available data, desired accuracy, and resources. For tasks where intense specialization isn't required, prompt engineering might prove more efficient and cost-effective. However, for tasks demanding tailored responses or specific scenario handling, fine-tuning presents an avenue to optimize the model's performance, albeit at a steeper time and resource cost. In AI and machine learning, the ideal solution often involves a trade-off, and the best choice might require integrating both techniques.
-
-To sum it up, this post emphasizes the vast potential of fine-tuning, especially when combined with techniques like prompt engineering, information retrieval, and function calling, to create a powerful solution for predictive tasks.
+Refer to the original post <a href="https://johncollins.ai/finetuning-openai" target="_blank">Prompt Engineering vs. Fine-Tuning: Navigating GPT Models for Stock Price and Volatility Predictions</a> for additional details and examples.

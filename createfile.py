@@ -1,7 +1,7 @@
 # File paths
 input_file_path = "/home/john/finetuning-openai/df_data_AAPL.txt"
-output_file_path = "/home/john/finetuning-openai/100_lines_AAPL.txt"
-linecount = 100
+output_file_path = "/home/john/finetuning-openai/100000_lines_AAPL.txt"
+linecount = 100000
 
 # Read the first linecount lines and write to the new file
 with open(input_file_path, 'r') as infile, open(output_file_path, 'w') as outfile:
