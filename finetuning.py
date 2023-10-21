@@ -44,7 +44,7 @@ with open(formatted_dataset_path, 'w') as f:
 def get_api_key():
     try:
         api_key = os.environ["OPENAI_API_KEY"]
-        openai.api_key = api_key  # set api key for the openai library
+        openai.api_key = api_key  
         print("API Key obtained.")
         return api_key
     except KeyError:
@@ -69,7 +69,7 @@ def upload_dataset(api_key, file_path):
         print("An error occurred during file upload:", e)
         exit()
 
-# Create a fine-tuning job
+# Create fine-tuning job
 def create_fine_tuning_job(api_key, file_id, model="gpt-3.5-turbo"):
     try:
         print(f"Creating fine-tuning job for file id: {file_id}")
