@@ -29,4 +29,8 @@ Various Python scripts support the work reported in the post:
 
 ## References
 
-Refer to the original post <a href="https://johncollins.ai/finetuning-openai" target="_blank">Prompt Engineering vs. Fine-Tuning: Navigating GPT Models for Stock Price and Volatility Predictions</a> for additional details and examples.
+- **OpenAI Documentation.** "Fine-tuning." [\<https://platform.openai.com/docs/guides/fine-tuning\>](https://platform.openai.com/docs/guides/fine-tuning)
+- **OpenAI Documentation.** "API reference." [\<https://platform.openai.com/docs/api-reference/fine-tuning\>](https://platform.openai.com/docs/api-reference/fine-tuning)
+- **OpenAI Updates.** "GPT-3.5 Turbo fine-tuning and API." [\<https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates\>](https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates)
+- **OpenAI Documentation.** "DALL·E 3." [\<https://openai.com/dall-e-3\>](https://openai.com/dall-e-3)
+- Refer to the original post <a href="https://johncollins.ai/finetuning-openai" target="_blank">Prompt Engineering vs. Fine-Tuning: Navigating GPT Models for Stock Price and Volatility Predictions</a> for additional details and examples.
