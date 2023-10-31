@@ -133,3 +133,6 @@ if __name__ == "__main__":
 - **OpenAI Updates.** "GPT-3.5 Turbo fine-tuning and API." [\<https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates\>](https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates)
 - **OpenAI Documentation.** "DALL·E 3." [\<https://openai.com/dall-e-3\>](https://openai.com/dall-e-3)
 - Refer to the original post <a href="https://johncollins.ai/finetuning-openai" target="_blank">Prompt Engineering vs. Fine-Tuning: Navigating GPT Models for Stock Price and Volatility Predictions</a> for additional details and examples.
+
+### License
+finetuning-openai is released under the MIT License.
