@@ -1,5 +1,5 @@
 # finetuning-openai
-![Prompt Engineering vs Fine-Tuning for Stock Price Predictions](finetuning-openai.png)
+![Prompt Engineering vs Fine-Tuning for Stock Price Predictions](finetuning-openai-3.png)
 
 ## Prompt Engineering vs Fine-Tuning for Stock Price Predictions
 This repo contains code and examples from my blog post on using prompt engineering and fine-tuning with GPT models for stock price predictions.
